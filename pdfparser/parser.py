@@ -87,7 +87,7 @@ class BRIParser(BaseBankParser):
             summary=summary
         )
     
-    def _extract_metadata(self, page) -> StatementMetadata:
+    def _extract_metadata(self, page: Any) -> StatementMetadata:
         """Extract metadata from the first page header section."""
         text = page.extract_text()
         if not text:
@@ -134,7 +134,7 @@ class BRIParser(BaseBankParser):
         
         return metadata
     
-    def _extract_transactions(self, page) -> List[Transaction]:
+    def _extract_transactions(self, page: Any) -> List[Transaction]:
         """Extract transactions from a page using word-level parsing."""
         words = page.extract_words()
         if not words:
@@ -347,7 +347,7 @@ class BRIParser(BaseBankParser):
     
 
     
-    def _extract_summary(self, page) -> Dict[str, Any]:
+    def _extract_summary(self, page: Any) -> Dict[str, Any]:
         """Extract summary information from the last page."""
         summary = {}
         

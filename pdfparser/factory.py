@@ -12,7 +12,7 @@ from .parser import BRIParser
 class ParserFactory:
     """Factory class for creating appropriate bank statement parsers."""
     
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the factory with available parsers."""
         self._parsers: List[Type[BaseBankParser]] = [
             BRIParser,
