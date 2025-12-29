@@ -268,7 +268,7 @@ class BRIParser(BaseBankParser):
         """Parse a single transaction line from words."""
         # Initialize with defaults
         date = ""
-        time = None
+        time: Optional[str] = None
         description = ""
         teller = ""
         debit = 0.0
