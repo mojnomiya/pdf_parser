@@ -205,9 +205,9 @@ class BRIParser(BaseBankParser):
     def _parse_transaction_lines(self, lines: List[List[Dict[str, Any]]]) -> List[Transaction]:
         """Parse grouped lines into Transaction objects."""
         transactions = []
-        current_transaction = None
+        current_transaction: Optional[Transaction] = None
         stop_processing = False
-        last_date = None
+        last_date: Optional[str] = None
         
         for line_words in lines:
             if stop_processing:
@@ -231,26 +231,26 @@ class BRIParser(BaseBankParser):
             
             if is_new_transaction or is_time_only_transaction:
                 # Save previous transaction if exists and is valid
-                if current_transaction and self._is_valid_transaction(current_transaction):
+                if current_transaction is not None and self._is_valid_transaction(current_transaction):
                     transactions.append(current_transaction)
                 
                 # Start new transaction
                 current_transaction = self._parse_transaction_line(line_words)
                 
                 # For time-only transactions, use the last known date
-                if is_time_only_transaction and last_date:
+                if is_time_only_transaction and last_date is not None:
                     current_transaction.transaction_date = last_date
                     current_transaction.transaction_time = first_word
                 elif is_new_transaction:
                     last_date = current_transaction.transaction_date
-            elif current_transaction:
+            elif current_transaction is not None:
                 # This is a continuation line - append to description
                 continuation_text = self._get_description_from_line(line_words)
                 if continuation_text:
                     current_transaction.description += " " + continuation_text
         
         # Don't forget the last transaction
-        if current_transaction and self._is_valid_transaction(current_transaction):
+        if current_transaction is not None and self._is_valid_transaction(current_transaction):
             transactions.append(current_transaction)
         
         return transactions
