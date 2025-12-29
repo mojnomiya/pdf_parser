@@ -163,7 +163,7 @@ class BRIParser(BaseBankParser):
         # Find the header row (contains "Tanggal" at x < 100)
         header_y = None
         for word in words:
-            if word['text'] == 'Tanggal' and word['x0'] < 100:
+            if word['text'] == 'Tanggal' and float(word['x0']) < 100:
                 header_y = word['top']
                 break
         
@@ -185,16 +185,17 @@ class BRIParser(BaseBankParser):
         
         lines = []
         current_line = [sorted_words[0]]
-        current_y = sorted_words[0]['top']
+        current_y: float = float(sorted_words[0]['top'])
         
         for word in sorted_words[1:]:
             # If word is on same line (within tolerance)
-            if abs(word['top'] - current_y) < 5:
+            word_y = float(word['top'])
+            if abs(word_y - current_y) < 5:
                 current_line.append(word)
             else:
                 lines.append(current_line)
                 current_line = [word]
-                current_y = word['top']
+                current_y = word_y
         
         if current_line:
             lines.append(current_line)
@@ -290,7 +291,7 @@ class BRIParser(BaseBankParser):
         balance_words = []
         
         for word in words:
-            x = word['x0']
+            x = float(word['x0'])
             text = word['text']
             
             if x < date_end:
@@ -341,7 +342,8 @@ class BRIParser(BaseBankParser):
         desc_words = []
         for word in words:
             # Only get words in description column area
-            if 0 <= word['x0'] < 360:  # Extended to include any overflow
+            x_pos = float(word['x0'])
+            if 0 <= x_pos < 360:  # Extended to include any overflow
                 desc_words.append(word['text'])
         return " ".join(desc_words)
     
@@ -349,7 +351,7 @@ class BRIParser(BaseBankParser):
     
     def _extract_summary(self, page: Any) -> Dict[str, Any]:
         """Extract summary information from the last page."""
-        summary = {}
+        summary: Dict[str, Any] = {}
         
         # Try table extraction first (more reliable)
         tables = page.extract_tables()
