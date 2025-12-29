@@ -1,0 +1,11 @@
+# Core dependencies
+pdfplumber>=0.7.0
+pandas>=1.3.0
+
+# Development dependencies (install with pip install -e ".[dev]")
+# pytest>=6.0
+# pytest-cov>=2.0
+# black>=22.0
+# flake8>=4.0
+# mypy>=0.900
+# pre-commit>=2.0

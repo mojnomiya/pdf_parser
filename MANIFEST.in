@@ -1,0 +1,12 @@
+include README.md
+include LICENSE
+include requirements.txt
+include pyproject.toml
+recursive-include pdfparser *.py
+recursive-include docs *.md
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude dev_scripts *
+exclude Example_statement.pdf
+exclude metadata.csv
+exclude transactions.csv
