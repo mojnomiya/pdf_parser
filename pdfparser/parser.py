@@ -158,7 +158,7 @@ class BRIParser(BaseBankParser):
         
         return transactions
     
-    def _find_table_start_y(self, words: List[Dict]) -> float:
+    def _find_table_start_y(self, words: List[Dict[str, Any]]) -> float:
         """Find the Y position where the transaction table starts."""
         # Find the header row (contains "Tanggal" at x < 100)
         header_y = None
@@ -170,12 +170,12 @@ class BRIParser(BaseBankParser):
         if header_y is not None:
             # Transaction data starts after the header row
             # Header row + English translation + some margin
-            return header_y + 15  # Small margin to skip header rows
+            return float(header_y + 15)  # Small margin to skip header rows
         
         # Fallback to default if header not found
-        return self.TABLE_START_Y
+        return float(self.TABLE_START_Y)
     
-    def _group_words_by_line(self, words: List[Dict]) -> List[List[Dict]]:
+    def _group_words_by_line(self, words: List[Dict[str, Any]]) -> List[List[Dict[str, Any]]]:
         """Group words into lines based on their y position."""
         if not words:
             return []
@@ -201,7 +201,7 @@ class BRIParser(BaseBankParser):
         
         return lines
     
-    def _parse_transaction_lines(self, lines: List[List[Dict]]) -> List[Transaction]:
+    def _parse_transaction_lines(self, lines: List[List[Dict[str, Any]]]) -> List[Transaction]:
         """Parse grouped lines into Transaction objects."""
         transactions = []
         current_transaction = None
@@ -264,7 +264,7 @@ class BRIParser(BaseBankParser):
             return False
         return True
     
-    def _parse_transaction_line(self, words: List[Dict]) -> Transaction:
+    def _parse_transaction_line(self, words: List[Dict[str, Any]]) -> Transaction:
         """Parse a single transaction line from words."""
         # Initialize with defaults
         date = ""
@@ -336,7 +336,7 @@ class BRIParser(BaseBankParser):
             balance=balance
         )
     
-    def _get_description_from_line(self, words: List[Dict]) -> str:
+    def _get_description_from_line(self, words: List[Dict[str, Any]]) -> str:
         """Extract description text from a continuation line."""
         desc_words = []
         for word in words:
